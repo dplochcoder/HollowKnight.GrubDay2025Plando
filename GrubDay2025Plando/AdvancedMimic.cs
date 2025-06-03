@@ -81,6 +81,7 @@ internal class AdvancedMimicContainer : MimicContainer
 
         void GiveAll()
         {
+            info.placement.AddVisitFlag(VisitState.Opened);
             ItemUtility.GiveSequentially(info.placement.Items, info.placement, new GiveInfo
             {
                 Container = AdvancedMimic,
@@ -102,7 +103,7 @@ internal class AdvancedMimic : MimicItem
 
     public override string GetPreferredContainer() => AdvancedMimicContainer.AdvancedMimic;
 
-    public override bool GiveEarly(string containerType) => containerType == Container.Mimic || containerType == AdvancedMimicContainer.AdvancedMimic;
+    public override bool GiveEarly(string containerType) => containerType == AdvancedMimicContainer.AdvancedMimic;
 
     public override void GiveImmediate(GiveInfo info)
     {
