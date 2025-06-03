@@ -1,16 +1,34 @@
 ﻿using ItemChanger;
-using ItemChanger.FsmStateActions;
-using UnityEngine.SceneManagement;
-using UnityEngine;
 using ItemChanger.Extensions;
+using ItemChanger.FsmStateActions;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GrubDay2025Plando;
 
-internal class MimicHazardRemoverDeployer : IDeployer
+internal class MimicInvincibilityModule : ItemChanger.Modules.Module
 {
-    public string SceneName { get; set; } = "";
+    public override void Initialize()
+    {
+        Events.OnSceneChange += AdjustHazardFSMs;
+        On.DamageEnemies.DoDamage += OverrideDoDamage;
+    }
 
-    public void OnSceneChange(Scene to)
+    public override void Unload()
+    {
+        Events.OnSceneChange -= AdjustHazardFSMs;
+        On.DamageEnemies.DoDamage -= OverrideDoDamage;
+    }
+
+    private static bool IsHazardDamager(GameObject go)
+    {
+        if (go.GetComponent<DamageHero>() is DamageHero dh && dh.hazardType > 1) return true;
+        if (go.LocateMyFSM("damages_hero") != null) return true;
+
+        return false;
+    }
+
+    private void AdjustHazardFSMs(Scene to)
     {
         foreach (var fsm in Object.FindObjectsOfType<PlayMakerFSM>())
         {
@@ -31,25 +49,7 @@ internal class MimicHazardRemoverDeployer : IDeployer
                 }));
             }
         }
-
-        GameObject damageEnemiesModder = new("DamageEnemiesModder");
-        damageEnemiesModder.AddComponent<DamageEnemiesModder>();
     }
-
-    private bool IsHazardDamager(GameObject go)
-    {
-        if (go.GetComponent<DamageHero>() is DamageHero dh && dh.hazardType > 1) return true;
-        if (go.LocateMyFSM("damages_hero") != null) return true;
-
-        return false;
-    }
-}
-
-internal class DamageEnemiesModder : MonoBehaviour
-{
-    private void Awake() => On.DamageEnemies.DoDamage += OverrideDoDamage;
-
-    private void OnDestroy() => On.DamageEnemies.DoDamage -= OverrideDoDamage;
 
     private void OverrideDoDamage(On.DamageEnemies.orig_DoDamage orig, DamageEnemies self, GameObject target)
     {
