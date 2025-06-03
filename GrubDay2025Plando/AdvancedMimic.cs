@@ -58,13 +58,11 @@ internal class AdvancedMimicContainer : MimicContainer
         return mimicContainer;
     }
 
-    public override void AddGiveEffectToFsm(PlayMakerFSM fsm, ContainerGiveInfo containerGiveInfo)
+    public override void AddGiveEffectToFsm(PlayMakerFSM fsm, ContainerGiveInfo info)
     {
         if (fsm.FsmName != "Grub Control") return;
 
-        GameObject mimic = fsm.gameObject.FindChild("Grub Mimic 1")!;
-        HealthManager hm = mimic.GetComponent<HealthManager>();
-
+        // Copied from ItemChanger MimicUtility.
         FsmState init = fsm.GetState("Init");
         init.SetActions(
             init.Actions[0],
@@ -72,53 +70,25 @@ internal class AdvancedMimicContainer : MimicContainer
             init.Actions[2],
             init.Actions[6],
             init.Actions[7],
-            new DelegateBoolTest(() => containerGiveInfo.placement.CheckVisitedAny(VisitState.Opened), (BoolTest)init.Actions[8])
+            new DelegateBoolTest(() => info.placement.CheckVisitedAny(VisitState.Opened), (BoolTest)init.Actions[8])
         // the removed actions are all various tests to check if the mimic is dead
         // we tie it to the placement to make it easier to control
         );
 
+        GameObject mimic = fsm.gameObject.FindChild("Grub Mimic 1")!;
         fsm.GetState("Activate").AddFirstAction(new Lambda(GiveAll));
-        hm.OnDeath += GiveAll;
+        mimic.GetComponent<HealthManager>().OnDeath += GiveAll;
 
         void GiveAll()
         {
-            Vector2 pos = mimic.transform.position;
-
-            GiveInfo giveInfo = new()
+            ItemUtility.GiveSequentially(info.placement.Items, info.placement, new GiveInfo
             {
-                Container = Mimic,
-                FlingType = containerGiveInfo.flingType,
-                Transform = mimic.transform,
+                Container = AdvancedMimic,
+                FlingType = FlingType.DirectDeposit,
                 MessageType = MessageType.Corner,
-            };
-
-            foreach (AbstractItem item in containerGiveInfo.placement.Items)
-            {
-                if (!item.IsObtained())
-                {
-                    if (containerGiveInfo.flingType == FlingType.DirectDeposit) GiveDirectly(containerGiveInfo, mimic.transform);
-                    else if (item.GiveEarly(Mimic)) item.Give(containerGiveInfo.placement, giveInfo);
-                    else
-                    {
-                        GameObject shiny = ShinyUtility.MakeNewShiny(containerGiveInfo.placement, item, containerGiveInfo.flingType);
-                        shiny.transform.position = pos;
-                        shiny.SetActive(true);
-                    }
-                }
-            }
-            containerGiveInfo.placement.AddVisitFlag(VisitState.Opened);
+                Transform = mimic.transform
+            });
         }
-    }
-
-    private void GiveDirectly(ContainerGiveInfo info, Transform t)
-    {
-        ItemUtility.GiveSequentially(info.placement.Items, info.placement, new GiveInfo
-        {
-            Container = "Enemy",
-            FlingType = info.flingType,
-            MessageType = MessageType.Corner,
-            Transform = t,
-        });
     }
 }
 
