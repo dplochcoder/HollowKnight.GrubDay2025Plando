@@ -57,6 +57,69 @@ internal class AdvancedMimicContainer : MimicContainer
 
         return mimicContainer;
     }
+
+    public override void AddGiveEffectToFsm(PlayMakerFSM fsm, ContainerGiveInfo containerGiveInfo)
+    {
+        if (fsm.FsmName != "Grub Control") return;
+
+        GameObject mimic = fsm.gameObject.FindChild("Grub Mimic 1")!;
+        HealthManager hm = mimic.GetComponent<HealthManager>();
+
+        FsmState init = fsm.GetState("Init");
+        init.SetActions(
+            init.Actions[0],
+            init.Actions[1],
+            init.Actions[2],
+            init.Actions[6],
+            init.Actions[7],
+            new DelegateBoolTest(() => containerGiveInfo.placement.CheckVisitedAny(VisitState.Opened), (BoolTest)init.Actions[8])
+        // the removed actions are all various tests to check if the mimic is dead
+        // we tie it to the placement to make it easier to control
+        );
+
+        fsm.GetState("Activate").AddFirstAction(new Lambda(GiveAll));
+        hm.OnDeath += GiveAll;
+
+        void GiveAll()
+        {
+            Vector2 pos = mimic.transform.position;
+
+            GiveInfo giveInfo = new()
+            {
+                Container = Mimic,
+                FlingType = containerGiveInfo.flingType,
+                Transform = mimic.transform,
+                MessageType = MessageType.Corner,
+            };
+
+            foreach (AbstractItem item in containerGiveInfo.placement.Items)
+            {
+                if (!item.IsObtained())
+                {
+                    if (containerGiveInfo.flingType == FlingType.DirectDeposit) GiveDirectly(containerGiveInfo, mimic.transform);
+                    else if (item.GiveEarly(Mimic)) item.Give(containerGiveInfo.placement, giveInfo);
+                    else
+                    {
+                        GameObject shiny = ShinyUtility.MakeNewShiny(containerGiveInfo.placement, item, containerGiveInfo.flingType);
+                        shiny.transform.position = pos;
+                        shiny.SetActive(true);
+                    }
+                }
+            }
+            containerGiveInfo.placement.AddVisitFlag(VisitState.Opened);
+        }
+    }
+
+    private void GiveDirectly(ContainerGiveInfo info, Transform t)
+    {
+        ItemUtility.GiveSequentially(info.placement.Items, info.placement, new GiveInfo
+        {
+            Container = "Enemy",
+            FlingType = info.flingType,
+            MessageType = MessageType.Corner,
+            Transform = t,
+        });
+    }
 }
 
 internal class AdvancedMimic : MimicItem
