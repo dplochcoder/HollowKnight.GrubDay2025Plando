@@ -17,9 +17,7 @@ public class GrubDay2025PlandoMod : Mod
         {
             orig(self, permaDeath, bossRush);
 
-            ItemChangerMod.CreateSettingsProfile(false);
-            ItemChangerMod.AddPlacements([Finder.GetLocation(LocationNames.Journal_Entry_Charged_Lumafly)!.Wrap().Add(new AdvancedMimic())]);
-            ItemChangerMod.AddDeployer(new MimicHazardRemoverDeployer() { SceneName = SceneNames.Fungus3_archive_02 });
+            // ItemChangerMod.CreateSettingsProfile(false);
         };
     }
 }
