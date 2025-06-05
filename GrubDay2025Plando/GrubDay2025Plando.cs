@@ -17,7 +17,6 @@ public class GrubDay2025PlandoMod : Mod
             orig(self, permaDeath, bossRush);
 
             // ItemChangerMod.CreateSettingsProfile(false);
-            // ItemChangerMod.AddPlacements([Finder.GetLocation(LocationNames.Wanderers_Journal_Kingdoms_Edge_Camp)!.Wrap().Add(new AdvancedMimic()).Add(Finder.GetItem(ItemNames.Hallownest_Seal)!)]);
         };
     }
 }
