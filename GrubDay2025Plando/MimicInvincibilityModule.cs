@@ -53,7 +53,7 @@ internal class MimicInvincibilityModule : ItemChanger.Modules.Module
 
     private void OverrideDoDamage(On.DamageEnemies.orig_DoDamage orig, DamageEnemies self, GameObject target)
     {
-        if (self.attackType == AttackTypes.Acid && target.name.ToUpper().Contains("MIMIC")) return;
+        if ((self.attackType == AttackTypes.Acid || self.attackType == AttackTypes.RuinsWater) && target.name.ToUpper().Contains("MIMIC")) return;
         orig(self, target);
     }
 }
