@@ -1,4 +1,5 @@
-﻿using ItemChanger;
+﻿using HutongGames.PlayMaker.Actions;
+using ItemChanger;
 using ItemChanger.Extensions;
 using ItemChanger.FsmStateActions;
 using UnityEngine;
@@ -43,6 +44,14 @@ internal class MimicInvincibilityModule : ItemChanger.Modules.Module
             if (fsm.FsmName == "enemy_message" && fsm.FsmVariables.GetFsmString("Event")?.Value == "ACID")
             {
                 fsm.GetState("Send").AddFirstAction(new Lambda(() =>
+                {
+                    var target = fsm.FsmVariables.GetFsmGameObject("Collider").Value;
+                    if (target.name.ToUpper().Contains("MIMIC")) fsm.SendEvent("FINISHED");
+                }));
+            }
+            if (fsm.FsmName == "Send Event" && fsm.GetState("Send Msg").GetFirstActionOfType<SendEventByName>() is SendEventByName send && send.sendEvent.Value == "SURFACE WATER")
+            {
+                fsm.GetState("Send Msg").AddFirstAction(new Lambda(() =>
                 {
                     var target = fsm.FsmVariables.GetFsmGameObject("Collider").Value;
                     if (target.name.ToUpper().Contains("MIMIC")) fsm.SendEvent("FINISHED");
