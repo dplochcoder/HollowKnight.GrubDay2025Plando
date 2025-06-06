@@ -49,7 +49,7 @@ internal class MimicInvincibilityModule : ItemChanger.Modules.Module
                     if (target.name.ToUpper().Contains("MIMIC")) fsm.SendEvent("FINISHED");
                 }));
             }
-            if (fsm.FsmName == "Send Event" && fsm.GetState("Send Msg").GetFirstActionOfType<SendEventByName>() is SendEventByName send && send.sendEvent.Value == "SURFACE WATER")
+            if (fsm.FsmName == "Send Event" && fsm.GetState("Send Msg")?.GetFirstActionOfType<SendEventByName>() is SendEventByName send && send.sendEvent.Value == "SURFACE WATER")
             {
                 fsm.GetState("Send Msg").AddFirstAction(new Lambda(() =>
                 {
