@@ -5,7 +5,7 @@ using ItemChanger.FsmStateActions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GrubDay2025Plando;
+namespace Mimicpocalypse;
 
 internal class MimicInvincibilityModule : ItemChanger.Modules.Module
 {

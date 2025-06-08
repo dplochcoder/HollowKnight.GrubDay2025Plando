@@ -1,3 +1,3 @@
-﻿# GrubDay2025Plando
+﻿# Mimicpocalypse
 
-Grub!
+A mod for the Grub Day 2025 plando

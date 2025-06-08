@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>GrubDay2025Plando</RootNamespace>
-    <AssemblyName>GrubDay2025Plando</AssemblyName>
+    <RootNamespace>Mimicpocalypse</RootNamespace>
+    <AssemblyName>Mimicpocalypse</AssemblyName>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyTitle>GrubDay2025Plando</AssemblyTitle>
-    <Product>GrubDay2025Plando</Product>
+    <AssemblyTitle>Mimicpocalypse</AssemblyTitle>
+    <Product>Mimicpocalypse</Product>
     <Description>Grub</Description>
     <Copyright>Copyright © dplochcoder 2025</Copyright>
     <Authors>dplochcoder</Authors>

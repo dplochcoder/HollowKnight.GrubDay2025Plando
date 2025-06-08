@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrubDay2025Plando", "GrubDay2025Plando\GrubDay2025Plando.csproj", "{C703D787-587F-B84E-1E41-602DCB42D966}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mimicpocalypse", "Mimicpocalypse\Mimicpocalypse.csproj", "{C703D787-587F-B84E-1E41-602DCB42D966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 ﻿using ItemChanger.Items;
 using ItemChanger;
 
-namespace GrubDay2025Plando;
+namespace Mimicpocalypse;
 
 internal class AdvancedMimic : MimicItem
 {

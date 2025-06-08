@@ -9,7 +9,7 @@ using UnityEngine;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 
-namespace GrubDay2025Plando;
+namespace Mimicpocalypse;
 
 internal record AdvancedMimicInfo
 {

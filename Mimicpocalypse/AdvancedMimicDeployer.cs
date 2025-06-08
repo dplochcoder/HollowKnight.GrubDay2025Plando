@@ -7,7 +7,7 @@ using UnityEngine;
 using HutongGames.PlayMaker.Actions;
 using HutongGames.PlayMaker;
 
-namespace GrubDay2025Plando;
+namespace Mimicpocalypse;
 
 internal record AdvancedMimicDeployer : Deployer
 {
