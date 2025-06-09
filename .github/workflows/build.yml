@@ -33,7 +33,7 @@ jobs:
         uses: BadMagic100/setup-hk@v2
         with:
           apiPath: API
-          #dependencyFilePath: GrubDay2025Plando/ModDependencies.txt
+          dependencyFilePath: Mimicpocalypse/ModDependencies.txt
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -48,14 +48,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Publish
-          path: GrubDay2025Plando/bin/Publish
+          path: Mimicpocalypse/bin/Publish
 
       - name: Generate attestation
         id: attest
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.should_release == 'true'
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: GrubDay2025Plando/bin/Publish/GrubDay2025Plando.zip
+          subject-path: Mimicpocalypse/bin/Publish/Mimicpocalypse.zip
   release:
     needs:
       - build
@@ -84,4 +84,4 @@ jobs:
           body: |
             Build attested at ${{ needs.build.outputs.attestation-url }}
           files: |
-            artifacts/Publish/GrubDay2025Plando.zip
+            artifacts/Publish/Mimicpocalypse.zip
